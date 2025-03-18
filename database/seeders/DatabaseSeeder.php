@@ -9,16 +9,17 @@ class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
-     *
+     * php artisan migrate:fresh --seed でダミーデータを生成
      * @return void
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $this->call([
+            AdminSeeder::class,
+            ShopSeeder::class,
+            ImageSeeder::class,
+            CategorySeeder::class,
+            ProductSeeder::class
+        ]);
     }
 }
