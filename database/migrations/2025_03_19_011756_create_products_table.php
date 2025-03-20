@@ -50,14 +50,3 @@ return new class extends Migration
         Schema::dropIfExists('products');
     }
 };
-
-// class TopController extends Controller
-// {
-//     public function showTop()
-//     {
-//         $products = DB::table('Products')
-//         ->join('images', 'Products.id', '=', 'images.id')
-//         ->paginate(8);
-//         return view('customer.top',compact('products'));
-//     }
-// }

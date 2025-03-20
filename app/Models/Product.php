@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Shop;
 use App\Models\SecondaryCategory;
 use App\Models\Image;
+use App\Models\Stock;
 
 class Product extends Model
 {
@@ -58,5 +59,10 @@ class Product extends Model
         return $this->belongsTo(Image::class, 'image4', 'id');
     }
 
-    protected $table = 'products'; // テーブル名を明示
+    public function stock()
+    {
+        return $this->hasMany(Stock::class);
+    }
+
+    protected $table = 'products'; // テーブル名を明示  
 }
