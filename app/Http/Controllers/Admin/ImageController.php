@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Image;
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UploadImageRequest;
 use Illuminate\Support\Facades\Storage;
@@ -101,32 +102,36 @@ class ImageController extends Controller
     {
         $image = Image::findOrFail($id);
 
-        // $imageInProducts = Product::where('image1', $image->id)
-        // ->orWhere('image2', $image->id)
-        // ->orWhere('image3', $image->id)
-        // ->orWhere('image4', $image->id)
-        // ->get();
+        // 【画像の削除処理】プロダクトで使用されている画像IDをチェックし、該当する場合は削除（nullをセット）
+        
+        $imageInProducts = Product::where('image1', $image->id)
+        ->orWhere('image2', $image->id)
+        ->orWhere('image3', $image->id)
+        ->orWhere('image4', $image->id)
+        ->get();
 
-        // if($imageInProducts){
-        //     $imageInProducts->each(function($product) use($image){
-        //         if($product->image1 === $image->id){
-        //             $product->image1 = null;
-        //             $product->save();
-        //         }
-        //         if($product->image2 === $image->id){
-        //             $product->image2 = null;
-        //             $product->save();
-        //         }
-        //         if($product->image3 === $image->id){
-        //             $product->image3 = null;
-        //             $product->save();
-        //         }
-        //         if($product->image4 === $image->id){
-        //             $product->image4 = null;
-        //             $product->save();
-        //         }
-        //     });
-        // }
+        if($imageInProducts){
+            $imageInProducts->each(function($product) use($image){
+                if($product->image1 === $image->id){
+                    $product->image1 = null;
+                    $product->save();
+                }
+                if($product->image2 === $image->id){
+                    $product->image2 = null;
+                    $product->save();
+                }
+                if($product->image3 === $image->id){
+                    $product->image3 = null;
+                    $product->save();
+                }
+                if($product->image4 === $image->id){
+                    $product->image4 = null;
+                    $product->save();
+                }
+            });
+        }
+
+        // 【処理終了】プロダクト内の該当画像を削除完了
 
         $filePath = 'public/products/' . $image->filename;
 

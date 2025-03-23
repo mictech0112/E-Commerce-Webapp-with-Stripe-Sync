@@ -30,27 +30,27 @@ class CategorySeeder extends Seeder
 
         DB::table('secondary_categories')->insert([
             [
-                'name' => 'サ業帽',
+                'name' => 'サウナキャップ',
                 'sort_order' => 1,
                 'primary_category_id' => 1
             ],
             [
-                'name' => 'めちゃめちゃワッチキャップ',
+                'name' => 'ニットキャップ',
                 'sort_order' => 2,
                 'primary_category_id' => 1
             ],
             [
-                'name' => 'WAVEキャップ',
+                'name' => 'サンバイザー',
                 'sort_order' => 3,
                 'primary_category_id' => 1
             ],
             [
-                'name' => 'ツメタイを添えてパーカー',
+                'name' => 'フーディー',
                 'sort_order' => 4,
                 'primary_category_id' => 2
             ],
             [
-                'name' => 'サ飯パーカー生姜焼き',
+                'name' => 'スウェットシャツ',
                 'sort_order' => 5,
                 'primary_category_id' => 2
             ],
@@ -60,17 +60,17 @@ class CategorySeeder extends Seeder
                 'primary_category_id' => 2
             ],
             [
-                'name' => 'サウナイキタイキーホルダー',
+                'name' => 'キーホルダー',
                 'sort_order' => 7,
                 'primary_category_id' => 3
             ],
             [
-                'name' => 'ロウリュしてもいいですかキーホルダー',
+                'name' => 'タオル',
                 'sort_order' => 8,
                 'primary_category_id' => 3
             ],
             [
-                'name' => '熱波うけるくん手ぬぐい',
+                'name' => 'サウナバッグ',
                 'sort_order' => 9,
                 'primary_category_id' => 3
             ],
