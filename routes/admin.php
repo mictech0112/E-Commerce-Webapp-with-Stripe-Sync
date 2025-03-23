@@ -34,11 +34,6 @@ Route::resource('images', ImageController::class)
 Route::resource('products', ProductController::class)
 ->middleware('auth:admin')->except(['show']);
 
-Route::get('/dashboard', function () {
-    return view('admin.dashboard');
-})->middleware(['auth:admin'])->name('dashboard');
-
-
 Route::get('/register', [RegisteredUserController::class, 'create'])
                 ->middleware('guest')
                 ->name('register');

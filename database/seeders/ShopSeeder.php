@@ -16,18 +16,11 @@ class ShopSeeder extends Seeder
     {
         DB::table('shops')->insert([
             [
-                'name' => 'ここに店名が入ります',
-                'information' => 'ここにお店の情報が入ります。ここにお店の情報が入ります。ここにお店の情報が入ります。',
+                'name' => 'サウナイキタイオンラインストア',
+                'information' => 'サウナってこんな楽しみ方もあるよ。こういうところに着目すると面白いよ。こんな施設があったよ。など、いろんな人のサウナ好き！な気持ちが集まって、皆のサウナライフがちょっぴり豊かに広がるようなサイトを目指しています。',
                 'filename' => 'sample1.jpg',
                 'is_selling' => true,
                 'is_soldout' => false  
-            ],
-            [
-                'name' => 'ここに店名が入ります',
-                'information' => 'ここにお店の情報が入ります。ここにお店の情報が入ります。ここにお店の情報が入ります。',
-                'filename' => 'sample2.jpg',
-                'is_selling' => true,
-                'is_soldout' => false   
             ],
             ]);
     }

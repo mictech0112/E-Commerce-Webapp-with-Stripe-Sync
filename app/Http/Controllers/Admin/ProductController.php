@@ -13,6 +13,7 @@ use App\Models\Product;
 use App\Models\Stock;
 use App\Models\Shop;
 use App\Models\PrimaryCategory;
+use App\Http\Requests\ProductRequest;
 
 class ProductController extends Controller
 {
@@ -36,7 +37,14 @@ class ProductController extends Controller
     {
         // EagerLoadingなし
         //$products = Owner::findOrFail(Auth::id())->shop->product;
-        $shopInfo = Shop::with('product.imageFirst')->get();
+        $shopInfo = Shop::with('product.imageFirst')
+        ->get()
+        ->map(function ($shop) {
+            $shop->product->each(function ($product) {
+                $product->quantity = Stock::where('product_id', $product->id)->sum('quantity');
+            });
+            return $shop;
+        });
 
         return view('admin.products.index',
         compact('shopInfo'));
@@ -63,7 +71,7 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
         try{
             DB::transaction(function () use($request) {
@@ -79,8 +87,8 @@ class ProductController extends Controller
                     'image3' => $request->image3,
                     'image4' => $request->image4,
                     'is_selling' => $request->is_selling,
-                    'is_soldout' => false, // 仮置きの値のため、フォームのレイアウトと合わせて後ほど修正する。
-                    'color' => 'default_color' // 仮置きの値のため、フォームのレイアウトと合わせて後ほど修正する。
+                    'is_soldout' => $request->is_soldout,
+                    'color' => $request->color
 
                 ]);
 
@@ -128,16 +136,76 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ProductRequest $request, $id)
     {
-        //
+        $request->validate([
+            'current_quantity' => 'required|integer',
+        ]);
+
+        $product = Product::findOrFail($id);
+        $quantity = Stock::where('product_id', $product->id)
+        ->sum('quantity');
+
+        if($request->current_quantity !== strval($quantity)){
+            $id = $request->route()->parameter('product');
+            return redirect()->route('admin.products.edit', [ 'product' => $id])
+            ->with(['message' => '在庫数が変更されています。再度確認してください。',
+                'status' => 'alert']);            
+
+        } else {
+
+            try{
+                DB::transaction(function () use($request, $product) {
+                    
+                        $product->name = $request->name;
+                        $product->information = $request->information;
+                        $product->price = $request->price;
+                        $product->sort_order = $request->sort_order;
+                        $product->shop_id = $request->shop_id;
+                        $product->secondary_category_id = $request->category;
+                        $product->image1 = $request->image1;
+                        $product->image2 = $request->image2;
+                        $product->image3 = $request->image3;
+                        $product->image4 = $request->image4;
+                        $product->is_selling = $request->is_selling;
+                        $product->is_soldout = $request->is_soldout;
+                        $product->color = $request->color;
+                        $product->save();
+
+                    if($request->type === \App\Constants\Common::PRODUCT_LIST['add']){
+                        $newQuantity = $request->quantity;
+                    }
+                    if($request->type === \App\Constants\Common::PRODUCT_LIST['reduce']){
+                        $newQuantity = $request->quantity * -1;
+                    }
+                    Stock::create([
+                        'product_id' => $product->id,
+                        'type' => $request->type,
+                        'quantity' => $newQuantity
+                    ]);
+                }, 2);
+            }catch(Throwable $e){
+                Log::error($e);
+                throw $e;
+            }
+    
+            return redirect()
+            ->route('admin.products.index')
+            ->with(['message' => '商品情報を更新しました。',
+            'status' => 'info']);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        Product::findOrFail($id)->delete(); 
+
+        return redirect()
+        ->route('admin.products.index')
+        ->with(['message' => '商品を削除しました。',
+        'status' => 'alert']);
     }
 }

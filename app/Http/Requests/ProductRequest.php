@@ -35,7 +35,9 @@ class ProductRequest extends FormRequest
             'image2' => 'nullable|exists:images,id',
             'image3' => 'nullable|exists:images,id',
             'image4' => 'nullable|exists:images,id',
-            'is_selling' => 'required|boolean'
+            'is_selling' => 'required|boolean',
+            'is_soldout' => 'required|boolean',
+            'color' => 'required|string|max:50'
         ];
     }
 }
