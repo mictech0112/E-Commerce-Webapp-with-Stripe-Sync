@@ -80,16 +80,16 @@
                 </div>
             </div>
               <div class="bg-white rounded-lg shadow">
-                  <div class="p-4 border-b">
-                      <div class="flex space-x-2">
-                          <select class="border rounded-md px-3 py-2 text-sm">
-                              <option>すべてのカテゴリ</option>
-                          </select>
-                          <select class="border rounded-md px-3 py-2 text-sm">
-                              <option>すべての状態</option>
-                          </select>
-                      </div>
-                  </div>
+                <div class="p-4 border-b">
+                    <div class="flex space-x-2">
+                        <select class="border rounded-md px-3 py-2 text-sm w-48 text-center pl-1">
+                            <option>すべてのカテゴリ</option>
+                        </select>
+                        <select class="border rounded-md px-3 py-2 text-sm w-48 text-center pl-1">
+                            <option>すべての状態</option>
+                        </select>
+                    </div>
+                </div>
                   
                   <div class="overflow-x-auto">
                       <table class="min-w-full divide-y divide-gray-200">
@@ -104,8 +104,7 @@
                               </tr>
                           </thead>
                           <tbody class="bg-white divide-y divide-gray-200">
-                              @foreach ($shopInfo as $shop)
-                              @foreach ($shop->product as $product)
+                              @foreach ($products as $product)
                               <tr>
                                   <td class="px-6 py-4 whitespace-nowrap">
                                       <div class="text-sm font-medium text-gray-900">{{ $product->name }}</div>
@@ -141,10 +140,10 @@
                                   </td>
                               </tr>
                               @endforeach
-                              @endforeach
                           </tbody>
                       </table>
                   </div>
+                  {{ $products->links() }}
               </div>
           </main>
       </div>

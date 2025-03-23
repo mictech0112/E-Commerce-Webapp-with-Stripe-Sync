@@ -37,17 +37,15 @@ class ProductController extends Controller
     {
         // EagerLoadingなし
         //$products = Owner::findOrFail(Auth::id())->shop->product;
-        $shopInfo = Shop::with('product.imageFirst')
-        ->get()
-        ->map(function ($shop) {
-            $shop->product->each(function ($product) {
+        $products = Product::with('imageFirst')->paginate(8);
+        $products->setCollection(
+            $products->getCollection()->map(function ($product) {
                 $product->quantity = Stock::where('product_id', $product->id)->sum('quantity');
-            });
-            return $shop;
-        });
-
+                return $product;
+            })
+        );
         return view('admin.products.index',
-        compact('shopInfo'));
+        compact('products'));
     }
 
     /**
