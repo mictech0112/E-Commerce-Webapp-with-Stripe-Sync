@@ -52,7 +52,7 @@
         <div class="grid grid-cols-4 gap-4 mb-4">
             @foreach ($products as $product)
             <div class="w-full fs-7">
-                <img src="{{ asset($product->filename) }}" class="w-full" alt="Default profile">
+                <img src="{{ asset('storage/products/' . $product->imageFirst->filename) }}" class="w-full" alt="Default profile">
                 <p class=>{{ $product->name }}</p>
                 <p class=>¥{{ number_format($product->price)  }}</p>
             </div>
