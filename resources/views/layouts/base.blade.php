@@ -36,7 +36,7 @@
         <!-- カート -->
         <div class="px-1">
             <button class="bg-black rounded-sm p-3  text-white">
-                <a href="{{ route('top') }}">
+                <a href="{{ route('cart.index') }}">
                     <x-icons.cart/>
                 </a>
             </button>
