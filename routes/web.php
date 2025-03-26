@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Customer\TopController;
+use App\Http\Controllers\Customer\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +25,18 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/top', [TopController::class, 'showTop'])->name('top');
+Route::get('detail/{item}', [TopController::class, 'showDetail'])->name('detail');
 
+Route::prefix('cart')->group(function(){
+    Route::get('/', [CartController::class, 'index'])->name('cart.index');
+    Route::post('add', [CartController::class, 'add'])->name('cart.add');
+    Route::put('update/{product}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('delete/{product}', [CartController::class, 'delete'])->name('cart.delete');
+    Route::delete('remove/{product}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::get('checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+    Route::get('success', [CartController::class, 'success'])->name('cart.success');
+    Route::get('cancel', [CartController::class, 'cancel'])->name('cart.cancel');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

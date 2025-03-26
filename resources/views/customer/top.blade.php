@@ -21,6 +21,7 @@
     <div class="flex justify-center mb-6">
         <img class="mx-auto" width="200" src="/images/logo.png">
     </div>
+    <x-flash-message status="session('status')" />
     <!-- ナビゲーション -->
     <div class="w-[45%] mx-auto">
         <div class="mb-4">
@@ -52,9 +53,15 @@
         <div class="grid grid-cols-4 gap-4 mb-4">
             @foreach ($products as $product)
             <div class="w-full fs-7">
-                <img src="{{ asset('storage/products/' . $product->imageFirst->filename) }}" class="w-full" alt="Default profile">
-                <p class=>{{ $product->name }}</p>
-                <p class=>¥{{ number_format($product->price)  }}</p>
+                <a href="{{ route('detail', ['item' => $product->id ])}}" class="block w-full">
+                    <div class="w-full aspect-[4/3] bg-gray-200 flex items-center justify-center">
+                        @if ($product->imageFirst)
+                            <img src="{{ asset('storage/products/' . $product->imageFirst->filename) }}" class="w-full" alt="Default profile">
+                        @endif
+                    </div>
+                    <p class=>{{ $product->name }}</p>
+                    <p class=>¥{{ number_format($product->price)  }}</p>
+                </a>
             </div>
             @endforeach
         </div>
